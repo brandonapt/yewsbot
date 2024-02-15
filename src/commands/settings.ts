@@ -67,14 +67,28 @@ export class UserCommand extends Subcommand {
 		interaction.reply({ content: `YEWS will now be sent to <#${channel.id}>`, ephemeral: true });
 	}
 
-	public async runMentionChange(interaction: Subcommand.ChatInputCommandInteraction) {}
+	public async runMentionChange(interaction: Subcommand.ChatInputCommandInteraction) {
+		const role = interaction.options.getRole('role', true);
+		const settingsManager = new SettingsManager(interaction.guildId!);
 
-	public async runImagesChange(interaction: Subcommand.ChatInputCommandInteraction) {}
+		await settingsManager.setMention(role.id);
+		interaction.reply({ content: `YEWS will now mention <@&${role.id}>`, ephemeral: true });
+	}
+
+	public async runImagesChange(interaction: Subcommand.ChatInputCommandInteraction) {
+		const enabled = interaction.options.getBoolean('enabled', true);
+		const settingsManager = new SettingsManager(interaction.guildId!);
+
+		await settingsManager.setImages(enabled);
+		interaction.reply({ content: `YEWS will now send images: ${enabled}`, ephemeral: true });
+	}
 
 	public async runGetSettings(interaction: Subcommand.ChatInputCommandInteraction) {
 		const settingsManager = new SettingsManager(interaction.guildId!);
-		const settings = await settingsManager.getServer();
+		const guild = await settingsManager.getServer()
 
-		interaction.reply({ content: `Settings for this server: ${JSON.stringify(settings)}`, ephemeral: true });
+		const settings = guild?.settings;
+
+		interaction.reply({ content: `Channel: <#${settings?.channel}>\nMention: <@&${settings?.mention}>\nImages: ${settings?.images}`, ephemeral: true });
 	}
 }

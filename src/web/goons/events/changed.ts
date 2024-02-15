@@ -19,13 +19,15 @@ export default async function () {
 		return { changed: false };
 	}
 
+	const filename = join(__dirname, '../../../../tmp/scrn-croppedarticles-' + Date.now() + '.png');
+
 	const daysNews = await getNewsPage(headline as string);
 
 	const iphone: any = await daysNews.$('.w-layout-blockcontainer');
 	await iphone.screenshot({ path: join(__dirname, '../../../../tmp/scrn-fp-tmp.png') });
 	await sharp(join(__dirname, '../../../../tmp/scrn-fp-tmp.png'))
 		.extract({ width: 288, height: 500, left: 0, top: 0 })
-		.toFile(join(__dirname, '../../../../tmp/screenshot-croppedarticles-' + Date.now() + '.png'));
+		.toFile(filename);
 
 	await daysNews.close();
 
@@ -34,7 +36,7 @@ export default async function () {
 	await client.set('latest-yews-headline', headline);
 	return {
 		url: 'https://yews.news' + headline,
-		imageName: 'screenshot-croppedarticles-' + Date.now() + '.png',
+		imageName: filename,
 		changed: true
 	};
 }

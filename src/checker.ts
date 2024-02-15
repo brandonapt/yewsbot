@@ -1,30 +1,31 @@
 import changed from './web/goons/events/changed';
 import serverSchema from './db/schemas/server.schema';
 import { container } from '@sapphire/framework';
-import { join } from 'path';
+import { NewsChannel, TextChannel } from 'discord.js';
 
 export default async function () {
-    setInterval(async () => {
-        const changedResults = await changed();
-        if (changedResults.changed == false || changedResults.changed == undefined) return;
+	setInterval(async () => {
+		const changedResults = await changed();
+		if (changedResults.changed == false || changedResults.changed == undefined) return;
 
-        const servers = await serverSchema.find();
-        servers.forEach(async (serverObj) => {
-            const server = await container.client.guilds.fetch(serverObj.id);
-            if (!server) return;
+		const servers = await serverSchema.find();
+		servers.forEach(async (serverObj) => {
+			const server = await container.client.guilds.fetch(serverObj.id);
+			if (!server) return;
 
-            const channel = server.channels.cache.get(serverObj.settings?.channel as string)
-            if (!channel) return;
+			const channel = server.channels.cache.get(serverObj.settings?.channel as string) as TextChannel | NewsChannel;
+			if (!channel) return;
 
-            const mention = serverObj.settings?.mention as string;
+			const mention = serverObj.settings?.mention as string;
 
-            const fileName = changedResults.imageName;
-            const path = join(__dirname, '../tmp/' + fileName);
-            if (mention) {
-                await channel.send({ content: "**NEW YEWS** <@&" + mention + ">", files: [path] });
-            } else {
-                await channel.send({ content: "**NEW YEWS**", files: [path] });
-            }
-        });
-    }, 10000)
+			const fileName = changedResults.imageName;
+			if (mention) {
+				// @ts-ignore
+				await channel.send({ content: '**NEW YEWS** <@&' + mention + '> \n\n' + changedResults.url, files: [fileName] });
+			} else {
+				// @ts-ignore
+				await channel.send({ content: '**NEW YEWS**\n\n' + changedResults.url, files: [fileName] });
+			}
+		});
+	}, 10000);
 }

@@ -18,13 +18,16 @@ export default class SettingsManager {
 	async setChannel(channel: string) {
 		const server = await serverSchema.findOne({ id: this.serverId });
 		if (server) {
-			await serverSchema
-				.findOneAndUpdate({ id: this.serverId }, { settings: { channel: channel } })
-				.catch((err) => console.log(err));
+			if (server.settings) {
+				server.settings.channel = channel;
+			} else {
+				server.settings = { channel: channel };
+			}
+			await server.save();
 		} else {
 			const newServer = new serverSchema({
 				id: this.serverId,
-				settings: { channel: channel },
+				settings: { channel: channel }
 			});
 			await newServer.save();
 		}
@@ -34,13 +37,16 @@ export default class SettingsManager {
 	async setImages(images: boolean) {
 		const server = await serverSchema.findOne({ id: this.serverId });
 		if (server) {
-			await serverSchema
-				.findOneAndUpdate({ id: this.serverId }, { settings: { images: images } })
-				.catch((err) => console.log(err));
+			if (server.settings) {
+				server.settings.images = images;
+			} else {
+				server.settings = { images: images };
+			}
+			await server.save();
 		} else {
 			const newServer = new serverSchema({
 				id: this.serverId,
-				settings: { images: images },
+				settings: { images: images }
 			});
 			await newServer.save();
 		}
@@ -50,13 +56,16 @@ export default class SettingsManager {
 	async setMention(mention: string) {
 		const server = await serverSchema.findOne({ id: this.serverId });
 		if (server) {
-			await serverSchema
-				.findOneAndUpdate({ id: this.serverId }, { settings: { mention: mention } })
-				.catch((err) => console.log(err));
+			if (server.settings) {
+				server.settings.mention = mention;
+			} else {
+				server.settings = { mention: mention };
+			}
+			await server.save();
 		} else {
 			const newServer = new serverSchema({
 				id: this.serverId,
-				settings: { mention: mention },
+				settings: { mention: mention }
 			});
 			await newServer.save();
 		}
@@ -84,6 +93,6 @@ export default class SettingsManager {
 	}
 
 	async setAnalytics(name: string, description: string, memberCount: number) {
-		await serverSchema.findOneAndUpdate({ id: this.serverId }, { analytics: { name: name, description: description, memberCount: memberCount } });
+		await serverSchema.findOneAndUpdate({ id: this.serverId }, { analytics: { name, description, memberCount } });
 	}
 }
