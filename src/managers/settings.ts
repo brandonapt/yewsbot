@@ -16,15 +16,51 @@ export default class SettingsManager {
 	}
 
 	async setChannel(channel: string) {
-		await serverSchema.findOneAndUpdate({ id: this.serverId }, { settings: { channel: channel } });
+		const server = await serverSchema.findOne({ id: this.serverId });
+		if (server) {
+			await serverSchema
+				.findOneAndUpdate({ id: this.serverId }, { settings: { channel: channel } })
+				.catch((err) => console.log(err));
+		} else {
+			const newServer = new serverSchema({
+				id: this.serverId,
+				settings: { channel: channel },
+			});
+			await newServer.save();
+		}
+		return server;
 	}
 
 	async setImages(images: boolean) {
-		await serverSchema.findOneAndUpdate({ id: this.serverId }, { settings: { images: images } });
+		const server = await serverSchema.findOne({ id: this.serverId });
+		if (server) {
+			await serverSchema
+				.findOneAndUpdate({ id: this.serverId }, { settings: { images: images } })
+				.catch((err) => console.log(err));
+		} else {
+			const newServer = new serverSchema({
+				id: this.serverId,
+				settings: { images: images },
+			});
+			await newServer.save();
+		}
+		return server;
 	}
 
 	async setMention(mention: string) {
-		await serverSchema.findOneAndUpdate({ id: this.serverId }, { settings: { mention: mention } });
+		const server = await serverSchema.findOne({ id: this.serverId });
+		if (server) {
+			await serverSchema
+				.findOneAndUpdate({ id: this.serverId }, { settings: { mention: mention } })
+				.catch((err) => console.log(err));
+		} else {
+			const newServer = new serverSchema({
+				id: this.serverId,
+				settings: { mention: mention },
+			});
+			await newServer.save();
+		}
+		return server;
 	}
 
 	async getChannel() {

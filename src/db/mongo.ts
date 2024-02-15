@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import fs from 'fs';
 import { container } from '@sapphire/framework';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/test';
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/yews-rewrite';
 
 export async function initializeMongooseClient() {
     await mongoose.connect(MONGO_URI)

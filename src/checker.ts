@@ -19,7 +19,7 @@ export default async function () {
             const mention = serverObj.settings?.mention as string;
 
             const fileName = changedResults.imageName;
-            const path = join(__dirname, '../../../../tmp/' + fileName);
+            const path = join(__dirname, '../tmp/' + fileName);
             if (mention) {
                 await channel.send({ content: "**NEW YEWS** <@&" + mention + ">", files: [path] });
             } else {
