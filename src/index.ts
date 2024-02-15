@@ -6,6 +6,7 @@ import { launchBrowser } from './web/master';
 import { initializeClient } from './db/redis';
 import { initializeMongooseClient } from './db/mongo';
 import checker from './checker';
+import { main as initializeCron } from './cron/clearFiles';
 
 const client = new SapphireClient({
 	logger: {
@@ -39,6 +40,8 @@ const main = async () => {
 		initializeClient()
 		initializeMongooseClient()
 		checker()
+		initializeCron()
+		setInterval(initializeCron, 60 * 60 * 1000);
 	});
 
 	process.on('SIGINT', async () => {

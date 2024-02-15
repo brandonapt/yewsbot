@@ -13,6 +13,8 @@ export default async function () {
 	const $ = load(content);
 	const headline = $('.collection-list').find('.w-dyn-item').last().find('a').attr('href');
 
+	if (!headline) return { changed: false };
+
 	if (headline.toString() === latestHeadline.toString()) {
 		await page.close();
 		container.logger.info('no new news');
