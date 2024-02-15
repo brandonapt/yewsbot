@@ -8,12 +8,6 @@ import { ApplicationCommandType, Message } from 'discord.js';
 export class UserCommand extends Command {
 	// Register Chat Input and Context Menu command
 	public override registerApplicationCommands(registry: Command.Registry) {
-		// Register Chat Input command
-		registry.registerChatInputCommand({
-			name: this.name,
-			description: this.description
-		});
-
 		// Register Context Menu command available from any message
 		registry.registerContextMenuCommand({
 			name: this.name,

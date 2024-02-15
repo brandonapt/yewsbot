@@ -1,4 +1,4 @@
-import changed from '../web/goons/events/changed';
+import changed from './web/goons/events/changed';
 import serverSchema from './db/schemas/server.schema';
 import { container } from '@sapphire/framework';
 import { join } from 'path';
@@ -26,5 +26,5 @@ export default async function () {
                 await channel.send({ content: "**NEW YEWS**", files: [path] });
             }
         });
-    })
+    }, 10000)
 }
