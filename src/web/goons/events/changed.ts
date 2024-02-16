@@ -39,6 +39,7 @@ export default async function () {
 	return {
 		url: 'https://yews.news' + headline,
 		imageName: filename,
-		changed: true
+		changed: true,
+		day: headline.split('/')[2]
 	};
 }

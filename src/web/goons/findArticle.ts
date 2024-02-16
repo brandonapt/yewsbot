@@ -9,10 +9,11 @@ export default async function findArticle(day: string, articleIndex: number | st
 		return false;
 	}
 
-	const article = articles[+articleIndex - 1];
+	const article = articles[+articleIndex];
+	console.log(article)
 	const articleTitle = await article.getProperty('textContent');
 	const articleContentsArray = await page.$$('.w-richtext');
-	const articleContents = await articleContentsArray[+articleIndex - 1].getProperty('textContent');
+	const articleContents = await articleContentsArray[+articleIndex].getProperty('textContent');
 	let articleContentsText = await articleContents.jsonValue();
 
 	const firstFourDigits = articleContentsText.match(/\d{4}\./);
@@ -26,7 +27,7 @@ export default async function findArticle(day: string, articleIndex: number | st
 
 	if (images) {
 		const image = await page.$$('.image');
-		const currentImage = image[+articleIndex - 1];
+		const currentImage = image[+articleIndex];
 		const imageUrl = await currentImage.getProperty('src');
 
 		return {
