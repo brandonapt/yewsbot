@@ -7,6 +7,7 @@ import { initializeClient } from './db/redis';
 import { initializeMongooseClient } from './db/mongo';
 import checker from './checker';
 import { main as initializeCron } from './cron/clearFiles';
+import status from './status';
 
 const client = new SapphireClient({
 	logger: {
@@ -17,9 +18,8 @@ const client = new SapphireClient({
 		status: PresenceUpdateStatus.Idle,
 		activities: [
 			{
-				name: "yeezy.com",
+				name: "complete rewrite out now!",
 				type: ActivityType.Custom,
-				url: "https://yeezy.com"
 			}
 		]
 	}
@@ -42,6 +42,7 @@ const main = async () => {
 		checker()
 		initializeCron()
 		setInterval(initializeCron, 60 * 60 * 1000);
+		setInterval(status, 60 * 1000);
 	});
 
 	process.on('SIGINT', async () => {

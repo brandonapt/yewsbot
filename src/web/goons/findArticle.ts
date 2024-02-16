@@ -10,7 +10,6 @@ export default async function findArticle(day: string, articleIndex: number | st
 	}
 
 	const article = articles[+articleIndex];
-	console.log(article)
 	const articleTitle = await article.getProperty('textContent');
 	const articleContentsArray = await page.$$('.w-richtext');
 	const articleContents = await articleContentsArray[+articleIndex].getProperty('textContent');
