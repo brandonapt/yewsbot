@@ -1,13 +1,14 @@
 import './lib/setup';
 
 import { LogLevel, SapphireClient } from '@sapphire/framework';
-import { ActivityType, GatewayIntentBits, PresenceUpdateStatus } from 'discord.js';
+import { ActivityType, GatewayIntentBits, OAuth2Scopes, PresenceUpdateStatus } from 'discord.js';
 import { launchBrowser } from './web/master';
 import { initializeClient } from './db/redis';
 import { initializeMongooseClient } from './db/mongo';
 import checker from './checker';
 import { main as initializeCron } from './cron/clearFiles';
 import status from './status';
+import '@sapphire/plugin-api/register';
 
 const client = new SapphireClient({
 	logger: {
@@ -22,6 +23,20 @@ const client = new SapphireClient({
 				type: ActivityType.Custom,
 			}
 		]
+	},
+	api: {
+		auth: {
+			id: process.env.DISCORD_CLIENT_ID as string,
+			secret: process.env.DISCORD_CLIENT_SECRET as string,
+			// replace in production
+			cookie: "yews-cookie",
+			redirect: "http://localhost:4000/oauth/callback",
+			scopes: [OAuth2Scopes.Identify, OAuth2Scopes.Guilds],
+			domainOverwrite: '127.0.0.1'
+		},
+		listenOptions: {
+			port: 4000
+		}
 	}
 });
 
@@ -36,13 +51,14 @@ const main = async () => {
 		process.exit(1);
 	}
 
-	launchBrowser().then(() => {
-		initializeClient()
-		initializeMongooseClient()
-		checker()
-		initializeCron()
-		setInterval(initializeCron, 60 * 60 * 1000);
-		setInterval(status, 60 * 1000);
+	launchBrowser().then(async () => {
+		await initializeClient()
+		await initializeMongooseClient()
+		await checker()
+		await initializeCron()
+		await setInterval(initializeCron, 60 * 60 * 1000);
+		await setInterval(status, 60 * 1000);
+		await setTimeout(status, 1000);
 	});
 
 	process.on('SIGINT', async () => {

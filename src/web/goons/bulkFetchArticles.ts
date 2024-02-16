@@ -1,6 +1,22 @@
 import getNewsPage from './getNewsPage';
+import yewsSchema from '../../db/schemas/yews.schema';
 
 export default async function bulkGetArticles(day: string, images: boolean) {
+
+	const breakingYews = await yewsSchema.findOne({ date: day });
+	if (breakingYews?.date) {
+		const mappedArticles = breakingYews.articles.map((article) => {
+			return {
+				title: article.title,
+				contents: article.contents,
+				imageUrl: article.image,
+				url: 'https://www.yews.news/edition/' + day,
+			};
+		});
+
+		return mappedArticles;
+	}
+
 	const page = await getNewsPage(`/edition/${day}`);
 	const iphone = await page.$('.w-layout-blockcontainer');
 	if (!iphone) {
@@ -57,6 +73,21 @@ export default async function bulkGetArticles(day: string, images: boolean) {
 				contents: articleContentsText
 			});
 		}
+	}
+
+	const dayYews = await yewsSchema.findOne({ date: day });
+	if (!dayYews?.date) {
+		const fresh = new yewsSchema({
+			date: day,
+			articles: articlesArray.map((article) => {
+				return {
+					title: article.title,
+					contents: article.contents,
+					image: article.imageUrl
+				};
+			})
+		});
+		await fresh.save();
 	}
 
 	return articlesArray;

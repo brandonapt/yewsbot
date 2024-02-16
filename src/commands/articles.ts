@@ -45,10 +45,10 @@ export class UserCommand extends Subcommand {
 		const latestHeadline = await client.get('latest-yews-headline');
 		const split = latestHeadline.split('/')[2];
 		const settings = new SettingsManager(interaction.guildId as string);
-        
-        const images = await settings.getImages();
 
-		const articleData = await bulkGetArticles(split, images as boolean);
+		const images = await settings.getImages();
+
+		const articleData = await bulkGetArticles(split, true);
 
 		if (!Array.isArray(articleData) || articleData.length === 0) {
 			await interaction.editReply({ content: 'No headlines found' });
@@ -56,78 +56,73 @@ export class UserCommand extends Subcommand {
 		}
 
 		const embeds = articleData.map((article) => {
-			return new EmbedBuilder()
+			const embed = new EmbedBuilder()
 				.setColor(0xbcbcb9)
 				.setTitle(article.title)
 				.setURL(article.url)
 				.setDescription(article.contents)
-				.setImage(article.imageUrl)
 				.setFooter({
 					text: 'yews.news | page ' + (articleData.indexOf(article) + 1) + ' of ' + articleData.length
 				});
+
+			if (images) {
+				embed.setImage(article.imageUrl);
+			}
+
+			return embed;
 		});
 
-        let currentPage = 0;
-        const collectorFilter = (i: { user: { id: string; }; }) => i.user.id === interaction.user.id;
-    
-        const previousButton = new ButtonBuilder()
-          .setCustomId("previous")
-          .setLabel("<-")
-          .setStyle(ButtonStyle.Primary);
-        
-        const cancelButton = new ButtonBuilder()
-          .setCustomId("cancel")
-          .setLabel("Cancel")
-          .setStyle(ButtonStyle.Danger);
-    
-        const nextButton = new ButtonBuilder()
-          .setCustomId("next")
-          .setLabel("->")
-          .setStyle(ButtonStyle.Primary);
-    
-        const row = new ActionRowBuilder()
-            .addComponents(previousButton, cancelButton, nextButton)
+		let currentPage = 0;
+		const collectorFilter = (i: { user: { id: string } }) => i.user.id === interaction.user.id;
 
-        const message = await interaction.editReply({
-            embeds: [embeds[currentPage]],
-            components: [row as any],
-        });
+		const previousButton = new ButtonBuilder().setCustomId('previous').setLabel('<-').setStyle(ButtonStyle.Primary);
 
-        const collector = message.createMessageComponentCollector({
-            filter: collectorFilter,
-            time: 60000,
-        });
-    
-        collector.on("collect", async (i) => {
-          if (i.customId === "previous") {
-            if (currentPage === 0) {
-              currentPage = embeds.length - 1;
-            } else {
-              currentPage--;
-            }
-          } else if (i.customId === "next") {
-            if (currentPage === embeds.length - 1) {
-              currentPage = 0;
-            } else {
-              currentPage++;
-            }
-          } else if (i.customId === "cancel") {
-            collector.stop();
-            return;
-          }
-    
-          await i.update({
-            embeds: [embeds[currentPage]],
-            components: [row] as any,
-          });
-        });
-    
-        collector.on("end", async () => {
-          await message.edit({
-            components: [],
-            content: "This interaction has ended.",
-          });
-        });
+		const cancelButton = new ButtonBuilder().setCustomId('cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger);
+
+		const nextButton = new ButtonBuilder().setCustomId('next').setLabel('->').setStyle(ButtonStyle.Primary);
+
+		const row = new ActionRowBuilder().addComponents(previousButton, cancelButton, nextButton);
+
+		const message = await interaction.editReply({
+			embeds: [embeds[currentPage]],
+			components: [row as any]
+		});
+
+		const collector = message.createMessageComponentCollector({
+			filter: collectorFilter,
+			time: 60000
+		});
+
+		collector.on('collect', async (i) => {
+			if (i.customId === 'previous') {
+				if (currentPage === 0) {
+					currentPage = embeds.length - 1;
+				} else {
+					currentPage--;
+				}
+			} else if (i.customId === 'next') {
+				if (currentPage === embeds.length - 1) {
+					currentPage = 0;
+				} else {
+					currentPage++;
+				}
+			} else if (i.customId === 'cancel') {
+				collector.stop();
+				return;
+			}
+
+			await i.update({
+				embeds: [embeds[currentPage]],
+				components: [row] as any
+			});
+		});
+
+		collector.on('end', async () => {
+			await message.edit({
+				components: [],
+				content: 'This interaction has ended.'
+			});
+		});
 	}
 
 	public async getDayArticles(interaction: Subcommand.ChatInputCommandInteraction) {
@@ -140,8 +135,8 @@ export class UserCommand extends Subcommand {
 
 		await interaction.deferReply();
 		const settings = new SettingsManager(interaction.guildId as string);
-        
-        const images = await settings.getImages();
+
+		const images = await settings.getImages();
 
 		const articleData = await bulkGetArticles(date, images as boolean);
 
@@ -162,66 +157,56 @@ export class UserCommand extends Subcommand {
 				});
 		});
 
-        let currentPage = 0;
-        const collectorFilter = (i: { user: { id: string; }; }) => i.user.id === interaction.user.id;
-    
-        const previousButton = new ButtonBuilder()
-          .setCustomId("previous")
-          .setLabel("<-")
-          .setStyle(ButtonStyle.Primary);
-        
-        const cancelButton = new ButtonBuilder()
-          .setCustomId("cancel")
-          .setLabel("Cancel")
-          .setStyle(ButtonStyle.Danger);
-    
-        const nextButton = new ButtonBuilder()
-          .setCustomId("next")
-          .setLabel("->")
-          .setStyle(ButtonStyle.Primary);
-    
-        const row = new ActionRowBuilder()
-            .addComponents(previousButton, cancelButton, nextButton)
+		let currentPage = 0;
+		const collectorFilter = (i: { user: { id: string } }) => i.user.id === interaction.user.id;
 
-        const message = await interaction.editReply({
-            embeds: [embeds[currentPage]],
-            components: [row as any],
-        });
+		const previousButton = new ButtonBuilder().setCustomId('previous').setLabel('<-').setStyle(ButtonStyle.Primary);
 
-        const collector = message.createMessageComponentCollector({
-            filter: collectorFilter,
-            time: 60000,
-        });
-    
-        collector.on("collect", async (i) => {
-          if (i.customId === "previous") {
-            if (currentPage === 0) {
-              currentPage = embeds.length - 1;
-            } else {
-              currentPage--;
-            }
-          } else if (i.customId === "next") {
-            if (currentPage === embeds.length - 1) {
-              currentPage = 0;
-            } else {
-              currentPage++;
-            }
-          } else if (i.customId === "cancel") {
-            collector.stop();
-            return;
-          }
-    
-          await i.update({
-            embeds: [embeds[currentPage]],
-            components: [row] as any,
-          });
-        });
-    
-        collector.on("end", async () => {
-          await message.edit({
-            components: [],
-            content: "This interaction has ended.",
-          });
-        });
+		const cancelButton = new ButtonBuilder().setCustomId('cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger);
+
+		const nextButton = new ButtonBuilder().setCustomId('next').setLabel('->').setStyle(ButtonStyle.Primary);
+
+		const row = new ActionRowBuilder().addComponents(previousButton, cancelButton, nextButton);
+
+		const message = await interaction.editReply({
+			embeds: [embeds[currentPage]],
+			components: [row as any]
+		});
+
+		const collector = message.createMessageComponentCollector({
+			filter: collectorFilter,
+			time: 60000
+		});
+
+		collector.on('collect', async (i) => {
+			if (i.customId === 'previous') {
+				if (currentPage === 0) {
+					currentPage = embeds.length - 1;
+				} else {
+					currentPage--;
+				}
+			} else if (i.customId === 'next') {
+				if (currentPage === embeds.length - 1) {
+					currentPage = 0;
+				} else {
+					currentPage++;
+				}
+			} else if (i.customId === 'cancel') {
+				collector.stop();
+				return;
+			}
+
+			await i.update({
+				embeds: [embeds[currentPage]],
+				components: [row] as any
+			});
+		});
+
+		collector.on('end', async () => {
+			await message.edit({
+				components: [],
+				content: 'This interaction has ended.'
+			});
+		});
 	}
 }

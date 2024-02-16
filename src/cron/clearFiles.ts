@@ -8,12 +8,15 @@ export async function main() {
 
     const now = Date.now()
 
+    if (tmpFiles.length === 0) return 
+
     tmpFiles.forEach(file => {
         const filePath = join(tmpDir, file)
         const fileStat = fs.statSync(filePath)
-        container.logger.info(`deleting old file: ${file}`)
-        if (fileStat.mtimeMs < now - 1000 * 60 * 60 * 3) {
+
+        if (fileStat.mtimeMs < now - 1000 * 60 * 60 * 3 && file !== '.gitkeep') {
             fs.unlinkSync(filePath)
+            container.logger.info(`deleting old file: ${file}`)
         }
     })
 }
