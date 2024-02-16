@@ -6,6 +6,7 @@
   "license": "UNLICENSE",
   "type": "commonjs",
   "dependencies": {
+    "@discordjs/voice": "^0.16.1",
     "@sapphire/decorators": "^6.0.4",
     "@sapphire/discord.js-utilities": "7.1.6",
     "@sapphire/framework": "^5.0.7",

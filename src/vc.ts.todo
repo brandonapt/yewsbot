@@ -1,0 +1,97 @@
+import { Subcommand } from '@sapphire/plugin-subcommands';
+import SettingsManager from '../managers/settings';
+const { joinVoiceChannel, getVoiceConnection } = require('@discordjs/voice');
+import { VoiceChannel } from 'discord.js';
+
+// Extend `Subcommand` instead of `Command`
+export class UserCommand extends Subcommand {
+	public constructor(context: Subcommand.LoaderContext, options: Subcommand.Options) {
+		super(context, {
+			...options,
+			name: 'vc',
+			subcommands: [
+				{
+					name: 'join',
+					chatInputRun: 'join'
+				},
+				{
+					name: 'leave',
+					chatInputRun: 'leave'
+				},
+				{
+					name: 'start',
+					chatInputRun: 'start'
+				},
+				{
+					name: 'stop',
+					chatInputRun: 'stop'
+				}
+			]
+		});
+	}
+
+	override registerApplicationCommands(registry: Subcommand.Registry) {
+		registry.registerChatInputCommand((builder) =>
+			builder
+				.setName('vc')
+				.setDescription('vc and stuff') // Needed even though base command isn't displayed to end user
+				.addSubcommand((command) =>
+					command
+						.setName('join')
+						.setDescription('join your vc')
+				)
+				.addSubcommand((command) =>
+					command
+						.setName('leave')
+						.setDescription('leave your vc')
+				)
+				.addSubcommand((command) =>
+					command
+						.setName('start')
+						.setDescription('start guess that song')
+				)
+				.addSubcommand((command) =>
+				command
+					.setName('stop')
+					.setDescription('stop guess that song')
+			)
+		);
+	}
+
+	public async join(interaction: Subcommand.ChatInputCommandInteraction) {
+		const user = interaction.member;
+        const voiceChannel: VoiceChannel = user.voice.channel;
+
+        if (!voiceChannel) {
+            return interaction.reply({ content: 'You need to be in a voice channel to use this command', ephemeral: true });
+        }
+
+        await joinVoiceChannel({
+            guildId: voiceChannel.guild.id,
+            channelId: voiceChannel.id,
+            adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+        })
+
+        interaction.reply({ content: 'Joined your voice channel', ephemeral: true });
+	}
+
+	public async leave(interaction: Subcommand.ChatInputCommandInteraction) {
+        const connection = await getVoiceConnection(interaction.guildId!);
+
+        if (!connection) {
+            return interaction.reply({ content: 'I am not in a voice channel', ephemeral: true });
+        }
+
+        connection.destroy()
+
+        interaction.reply({ content: 'Left your voice channel', ephemeral: true });
+	}
+
+	public async start(interaction: Subcommand.ChatInputCommandInteraction) {
+
+	}
+
+	public async stop(interaction: Subcommand.ChatInputCommandInteraction) {
+
+	}
+}
