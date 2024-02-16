@@ -12,7 +12,7 @@ export default async function () {
 
 		const servers = await serverSchema.find();
 
-		const articles = await bulkGetArticles(changedResults.day as string, false);
+		const articles = await bulkGetArticles(changedResults.day as string, true);
 		if (!Array.isArray(articles)) return;
 		const mapped = articles.map((article, index) => {
 			return {
@@ -22,11 +22,12 @@ export default async function () {
 		});
 
 		const todaysYews = new yewsSchema({
-			day: changedResults.day,
+			date: changedResults.day,
 			articles: articles.map((article) => {
 				return {
 					title: article.title,
-					contents: article.contents
+					contents: article.contents,
+					image: article.imageUrl
 				};
 			})
 		});
