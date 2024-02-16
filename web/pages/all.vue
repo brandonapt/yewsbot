@@ -46,14 +46,20 @@ function enterDay(date) {
     navigateTo(`/yews/${date}`)
 }
 
+function format(date, time) {
+  const dateSplit = date.split('-')
+  const done = `${dateSplit[0]}-${dateSplit[1]}-${dateSplit[2]}-${time}`
+  return done
+}
+
 </script>
 
 <template>
   <div class="row" v-for="daily in yews" :key="daily.date">
     <p class="date">{{ daily.reconstructed }}</p>
-    <p v-if="daily['10am']" @click="enterDay(daily.date)" class="time">10AM</p>
-    <p v-if="daily['3pm']" @click="enterDay(daily.date)" class="time">3PM</p>
-    <p v-if="daily['8pm']" @click="enterDay(daily.date)" class="time">8PM</p>
+    <p v-if="daily['10am']" @click="enterDay(format(daily.date, '10am'))" class="time">10AM</p>
+    <p v-if="daily['3pm']" @click="enterDay(format(daily.date, '3pm'))" class="time">3PM</p>
+    <p v-if="daily['8pm']" @click="enterDay(format(daily.date, '8pm'))" class="time">8PM</p>
   </div>
 </template>
 
