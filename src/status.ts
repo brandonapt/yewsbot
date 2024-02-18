@@ -7,5 +7,4 @@ export default async function () {
     if (!status || status.toString() == container.client.user?.presence.status.toString()) return;
 
     container.client.user?.setActivity({ name: status, type: ActivityType.Custom });
-    container.logger.info(`status updated to: ${status}`);
 }
