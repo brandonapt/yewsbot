@@ -25,7 +25,7 @@ function concatined(seperator, index) {
 }
 
 function toggleArticle(id) {
-  const index = yews.value.findIndex(article => article._id === id)
+  const index = yews.value.findIndex(article => article.title === id)
   yews.value[index].toggled = !yews.value[index].toggled
 }
 
@@ -39,7 +39,7 @@ function openArticle(dates) {
     <p class="heading" @click="openArticle(date)">{{ concatined(' ', 3) }} - {{ date.split('-')[3] }}</p>
     <p @click="goback" class="goback">← GO BACK</p>
     <div class="article" v-for="article in yews" :key="article.title">
-      <p class="title" @click="toggleArticle(article._id)">{{ article.title }}</p>
+      <p class="title" @click="toggleArticle(article.title)">{{ article.title }}</p>
       <div class="row">
         <p class="contents" v-if="article.toggled">{{ article.contents }}</p>
         <img class="image" v-if="article.toggled" :src="article.image" alt="image" width="20%" />

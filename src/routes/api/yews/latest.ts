@@ -1,5 +1,4 @@
 import { methods, Route, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
-import yewsSchema from '../../../db/schemas/yews.schema';
 import { client } from '../../../db/redis';
 import bulkGetArticles from '../../../web/goons/bulkFetchArticles';
 
