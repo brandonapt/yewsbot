@@ -17,15 +17,15 @@ const client = new SapphireClient({
 	},
 	intents: [GatewayIntentBits.Guilds],
 	presence: {
-		status: PresenceUpdateStatus.Idle,
+		status: PresenceUpdateStatus.Idle
 	},
 	api: {
 		auth: {
 			id: process.env.DISCORD_CLIENT_ID as string,
 			secret: process.env.DISCORD_CLIENT_SECRET as string,
 			// replace in production
-			cookie: "yews-cookie",
-			redirect: "http://localhost:4000/oauth/callback",
+			cookie: 'yews-cookie',
+			redirect: 'http://localhost:4000/oauth/callback',
 			scopes: [OAuth2Scopes.Identify, OAuth2Scopes.Guilds],
 			domainOverwrite: '127.0.0.1'
 		},
@@ -40,17 +40,17 @@ const main = async () => {
 		client.logger.info('Logging in');
 		await client.login();
 		client.logger.info('logged in');
-	} catch (error) { 
+	} catch (error) {
 		client.logger.fatal(error);
 		await client.destroy();
 		process.exit(1);
 	}
 
 	launchBrowser().then(async () => {
-		await initializeClient()
-		await initializeMongooseClient()
-		await checker()
-		await initializeCron()
+		await initializeClient();
+		await initializeMongooseClient();
+		await checker();
+		await initializeCron();
 		await setInterval(initializeCron, 60 * 60 * 1000);
 		await setInterval(status, 60 * 1000);
 		await setTimeout(status, 1000);
@@ -66,7 +66,6 @@ const main = async () => {
 	process.on('unhandledRejection', (error) => {
 		client.logger.fatal(error);
 	});
-
 };
 
 void main();
