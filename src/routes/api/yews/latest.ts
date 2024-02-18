@@ -1,6 +1,7 @@
 import { methods, Route, type ApiRequest, type ApiResponse } from '@sapphire/plugin-api';
 import yewsSchema from '../../../db/schemas/yews.schema';
 import { client } from '../../../db/redis';
+import bulkGetArticles from '../../../web/goons/bulkFetchArticles';
 
 export class UserRoute extends Route {
   public constructor(context: Route.LoaderContext, options: Route.Options) {
@@ -15,8 +16,12 @@ export class UserRoute extends Route {
     const split = latestHeadline.split('/')[2];
     console.log(split);
 
-    const yews = await yewsSchema.find({ date: split });
+    const yews = await bulkGetArticles(split, true);
+    const obj = {
+      date: split,
+      articles: yews
+    };
 
-    response.json({ message: "here ya go! use it wisely.", status: 'ok', yews: yews[0] });
+    response.json({ message: "here ya go! use it wisely.", status: 'ok', yews: obj });
   }
 }
