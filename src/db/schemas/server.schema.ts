@@ -4,7 +4,7 @@ const serverSchema = new Schema({
     id: String,
     analytics: {
         name: String,
-        description: String,
+        created: Date,
         memberCount: Number,
     },
     settings: {

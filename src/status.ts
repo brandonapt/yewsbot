@@ -4,8 +4,8 @@ import { ActivityType } from "discord.js";
 
 export default async function () {
     const status = await client.get('status');
-    if (!status || status == container.client.user?.presence.status) return;
+    if (!status || status.toString() == container.client.user?.presence.status.toString()) return;
 
     container.client.user?.setActivity({ name: status, type: ActivityType.Custom });
-    container.logger.info(`Status set to ${status}`);
+    container.logger.info(`status updated to: ${status}`);
 }

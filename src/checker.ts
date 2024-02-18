@@ -52,9 +52,10 @@ export default async function () {
 				// @ts-ignore
 				await channel.send({ content: '**NEW YEWS** <@&' + mention + '> \n\n' + changedResults.url, files: [fileName], components: [row] });
 			} else {
-				// @ts-ignore
+				// @ts-ignore - this doesn't work for some dumb reason
 				await channel.send({ content: '**NEW YEWS**\n\n' + changedResults.url, files: [fileName], components: [row] });
 			}
 		});
 	}, 10000);
 }
+ 

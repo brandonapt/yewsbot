@@ -1,7 +1,7 @@
 import './lib/setup';
 
 import { LogLevel, SapphireClient } from '@sapphire/framework';
-import { ActivityType, GatewayIntentBits, OAuth2Scopes, PresenceUpdateStatus } from 'discord.js';
+import { GatewayIntentBits, OAuth2Scopes, PresenceUpdateStatus } from 'discord.js';
 import { launchBrowser } from './web/master';
 import { initializeClient } from './db/redis';
 import { initializeMongooseClient } from './db/mongo';
@@ -9,6 +9,7 @@ import checker from './checker';
 import { main as initializeCron } from './cron/clearFiles';
 import status from './status';
 import '@sapphire/plugin-api/register';
+import analytics from './analytics';
 
 const client = new SapphireClient({
 	logger: {
@@ -17,12 +18,6 @@ const client = new SapphireClient({
 	intents: [GatewayIntentBits.Guilds],
 	presence: {
 		status: PresenceUpdateStatus.Idle,
-		activities: [
-			{
-				name: "complete rewrite out now!",
-				type: ActivityType.Custom,
-			}
-		]
 	},
 	api: {
 		auth: {
@@ -59,6 +54,7 @@ const main = async () => {
 		await setInterval(initializeCron, 60 * 60 * 1000);
 		await setInterval(status, 60 * 1000);
 		await setTimeout(status, 1000);
+		await setTimeout(analytics, 1000);
 	});
 
 	process.on('SIGINT', async () => {

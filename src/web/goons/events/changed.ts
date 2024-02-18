@@ -17,7 +17,6 @@ export default async function () {
 
 	if (headline.toString() === latestHeadline.toString()) {
 		await page.close();
-		container.logger.info('no new news');
 		return { changed: false };
 	}
 
@@ -33,7 +32,7 @@ export default async function () {
 
 	await daysNews.close();
 
-	container.logger.info('new news');
+	container.logger.info('news YEWS! hang tight while i send it out');
 
 	await client.set('latest-yews-headline', headline);
 	return {
