@@ -66,7 +66,7 @@ export class UserCommand extends Subcommand {
 				});
 
 			if (images) {
-				embed.setImage(article.imageUrl);
+				embed.setImage(article.image);
 			}
 
 			return embed;
@@ -151,7 +151,7 @@ export class UserCommand extends Subcommand {
 				.setTitle(article.title)
 				.setURL(article.url)
 				.setDescription(article.contents)
-				.setImage(article.imageUrl)
+				.setImage(article.image)
 				.setFooter({
 					text: 'yews.news | page ' + (articleData.indexOf(article) + 1) + ' of ' + articleData.length
 				});

@@ -36,7 +36,7 @@ export default async function getAllHeadlines(day: string, images: boolean) {
 				url: `https://www.yews.news/edition/${day}`,
 				title: await articleTitle.jsonValue(),
 				contents: articleContentsText,
-				imageUrl: await imageUrl.jsonValue()
+				image: await imageUrl.jsonValue()
 			});
 		} else {
 			headlines.push({

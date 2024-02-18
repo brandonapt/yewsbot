@@ -27,7 +27,7 @@ export default async function () {
 				return {
 					title: article.title,
 					contents: article.contents,
-					image: article.imageUrl
+					image: article.image
 				};
 			})
 		});

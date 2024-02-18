@@ -9,7 +9,7 @@ export default async function bulkGetArticles(day: string, images: boolean) {
 			return {
 				title: article.title,
 				contents: article.contents,
-				imageUrl: article.image,
+				image: article.image,
 				url: 'https://www.yews.news/edition/' + day,
 			};
 		});
@@ -64,7 +64,7 @@ export default async function bulkGetArticles(day: string, images: boolean) {
 				url: 'https://www.yews.news/edition/' + day,
 				title: articleTitle,
 				contents: articleContentsText,
-				imageUrl: await imageUrl.jsonValue()
+				image: await imageUrl.jsonValue()
 			});
 		} else {
 			articlesArray.push({
@@ -83,7 +83,7 @@ export default async function bulkGetArticles(day: string, images: boolean) {
 				return {
 					title: article.title,
 					contents: article.contents,
-					image: article.imageUrl
+					image: article.image
 				};
 			})
 		});

@@ -33,7 +33,7 @@ export default async function findArticle(day: string, articleIndex: number | st
 			url: `https://www.yews.news/edition/${day}`,
 			title: await articleTitle.jsonValue(),
 			contents: articleContentsText,
-			imageUrl: await imageUrl.jsonValue()
+			image: await imageUrl.jsonValue()
 		};
 	}
 
