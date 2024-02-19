@@ -3,6 +3,7 @@ const { container } = require('@sapphire/framework');
 
 let browser: any;
 const prod = process.argv.includes('--prod');
+console.log('prod', prod);
 
 export async function launchBrowser() {
     if (!prod) {
