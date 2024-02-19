@@ -10,7 +10,6 @@ import { main as initializeCron } from './cron/clearFiles';
 import status from './status';
 import '@sapphire/plugin-api/register';
 import analytics from './analytics';
-import archiver from './scripts/archiver';
 
 const client = new SapphireClient({
 	logger: {
