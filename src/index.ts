@@ -10,6 +10,7 @@ import { main as initializeCron } from './cron/clearFiles';
 import status from './status';
 import '@sapphire/plugin-api/register';
 import analytics from './analytics';
+import archiver from './scripts/archiver';
 
 const client = new SapphireClient({
 	logger: {
@@ -55,6 +56,7 @@ const main = async () => {
 		await setInterval(status, 60 * 1000);
 		await setTimeout(status, 1000);
 		await setTimeout(analytics, 1000);
+		// await archiver();
 	});
 
 	process.on('SIGINT', async () => {
