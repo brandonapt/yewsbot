@@ -9,6 +9,7 @@ export async function launchBrowser() {
         browser = await launch({ headless: "new" as any });
     } else {
         browser = await launch({ headless: "new" as any, executablePath: '/usr/lib/chromium-browser' });
+        container.logger.info('browser launched in production mode');
     }
     container.logger.info('browser launched');
 }
