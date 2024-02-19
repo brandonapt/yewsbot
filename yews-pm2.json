@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "yews",
+            "script": "node",
+            "args" : ". --prod"
+        }
+    ]
+}
