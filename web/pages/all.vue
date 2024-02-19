@@ -2,7 +2,7 @@
 const yews = ref([])
 
 onMounted(async () => {
-    const response = await fetch('https://api.brandon.me/api/yews/fetch')
+    const response = await fetch('https://api.brandon3.me/api/yews/fetch')
     let data = await response.json()
     const reconstructeds = []
 
