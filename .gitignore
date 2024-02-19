@@ -31,4 +31,4 @@ package-lock.json
 .env
 src/.env
 
-tmp/
+tmp/*
