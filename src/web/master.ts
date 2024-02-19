@@ -2,7 +2,7 @@ import { launch } from 'puppeteer';
 const { container } = require('@sapphire/framework');
 
 let browser: any;
-const prod = process.env.NODE_ENV === 'production';
+const prod = process.argv.includes('--prod');
 
 export async function launchBrowser() {
     if (!prod) {
