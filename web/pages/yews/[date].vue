@@ -5,7 +5,7 @@ const date = ref(route.params.date)
 const yews = ref([])
 
 onMounted(async () => {
-  const response = await fetch(`http://localhost:4000/api/yews/${date.value}/get`)
+  const response = await fetch(`https://api.brandon3.me/api/yews/${date.value}/get`)
   let data = await response.json()
 
   if (data.error) {

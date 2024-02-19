@@ -5,7 +5,7 @@ const yews = ref([])
 const date = ref("[ LOADING ]")
 
 onMounted(async () => {
-  const response = await fetch(`http://localhost:4000/api/yews/latest`)
+  const response = await fetch(`https://api.brandon3.me/api/yews/latest`)
   let data = await response.json()
 
   if (data.error) {
