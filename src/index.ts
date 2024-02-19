@@ -65,7 +65,11 @@ const main = async () => {
 		await setInterval(status, 60 * 1000);
 		await setTimeout(status, 1000);
 		await setTimeout(analytics, 1000);
-		// await archiver();
+
+		const guilds = await client.guilds.fetch();
+		client.logger.info(`Bot is in ${guilds.size} guilds`);
+		const mapped = guilds.map((guild) => guild.name);
+		client.logger.info(mapped);
 	});
 
 	process.on('SIGINT', async () => {
