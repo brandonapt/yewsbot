@@ -47,7 +47,8 @@
     "watch:start": "tsc-watch --onSuccess \"npm run start\"",
     "format": "prettier --write \"src/\"",
     "web:dev": "cd web && npm run dev",
-    "web:build": "cd web && npm run build"
+    "web:build": "cd web && npm run build",
+    "production": "node dist/index.js --prod"
   },
   "prettier": "@sapphire/prettier-config"
 }
