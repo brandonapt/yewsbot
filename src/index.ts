@@ -11,6 +11,16 @@ import status from './status';
 import '@sapphire/plugin-api/register';
 import analytics from './analytics';
 
+function generateRandomString(length: number) {
+	let result = '';
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	const charactersLength = characters.length;
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
+}
+
 const client = new SapphireClient({
 	logger: {
 		level: LogLevel.Debug
@@ -23,8 +33,8 @@ const client = new SapphireClient({
 		auth: {
 			id: process.env.DISCORD_CLIENT_ID as string,
 			secret: process.env.DISCORD_CLIENT_SECRET as string,
-			// replace in production
-			cookie: 'yews-cookie',
+			// replace in production. currently unused so we can leave it as is
+			cookie: generateRandomString(32),
 			redirect: 'http://localhost:4000/oauth/callback',
 			scopes: [OAuth2Scopes.Identify, OAuth2Scopes.Guilds],
 			domainOverwrite: '127.0.0.1'
