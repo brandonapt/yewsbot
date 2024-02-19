@@ -13,7 +13,6 @@ export class UserRoute extends Route {
   public async [methods.GET](_request: ApiRequest, response: ApiResponse) {
     const latestHeadline = await client.get('latest-yews-headline');
     const split = latestHeadline.split('/')[2];
-    console.log(split);
 
     const yews = await bulkGetArticles(split, true);
     const obj = {

@@ -27,7 +27,6 @@ function concatined(seperator, index) {
 function toggleArticle(id) {
   const index = yews.value.findIndex(article => article._id === id)
   yews.value[index].toggled = !yews.value[index].toggled
-  console.log(yews.value[index].toggled)
 }
 
 function openArticle(date) {

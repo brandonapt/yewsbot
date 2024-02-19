@@ -13,7 +13,6 @@ onMounted(async () => {
 
         if (reconstructeds.find(reconstructed => reconstructed.reconstructed === reconstruction)) {
             const index = reconstructeds.findIndex(reconstructed => reconstructed.reconstructed === reconstruction)
-            console.log(reconstructeds[index])
             reconstructeds[index][date[3]] = day.articles
             return
         }
