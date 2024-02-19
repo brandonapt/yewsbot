@@ -6,7 +6,7 @@ const prod = process.argv.includes('--prod');
 
 export async function launchBrowser() {
     if (prod === true) {
-        browser = await launch({ headless: "new" as any, executablePath: '/usr/lib/chromium-browser', args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+        browser = await launch({ headless: "new" as any, executablePath: '/usr/bin/chromium', args: ['--no-sandbox', '--disable-setuid-sandbox'] });
         container.logger.info('browser launched in production mode');
     } else {
         browser = await launch({ headless: "new" as any });
