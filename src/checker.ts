@@ -3,6 +3,7 @@ import serverSchema from './db/schemas/server.schema';
 import { container } from '@sapphire/framework';
 import { ActionRowBuilder, NewsChannel, StringSelectMenuBuilder, TextChannel } from 'discord.js';
 import bulkGetArticles from './web/goons/bulkFetchArticles';
+import yewsSchema from './db/schemas/yews.schema';
 
 export default async function () {
 	setInterval(async () => {
@@ -11,7 +12,28 @@ export default async function () {
 
 		const servers = await serverSchema.find();
 
-		await bulkGetArticles(changedResults.day as string, true);
+
+		const articles = await bulkGetArticles(changedResults.day as string, true);
+		if (!Array.isArray(articles)) return;
+		const mapped = articles.map((article, index) => {
+			return {
+				label: article.title,
+				value: index.toString()
+			};
+		});
+
+		const todaysYews = new yewsSchema({
+			date: changedResults.day,
+			articles: articles.map((article) => {
+				return {
+					title: article.title,
+					contents: article.contents,
+					image: article.image
+				};
+			})
+		});
+
+		await todaysYews.save();
 
 		servers.forEach(async (serverObj) => {
 			const server = await container.client.guilds.fetch(serverObj.id);
