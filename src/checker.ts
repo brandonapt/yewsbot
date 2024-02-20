@@ -8,7 +8,7 @@ import yewsSchema from './db/schemas/yews.schema';
 export default async function () {
 	setInterval(async () => {
 		const changedResults = await changed();
-		if (changedResults.changed == false || changedResults.changed == undefined) return;
+		if (changedResults.changed == false || changedResults.changed == undefined || changedResults.url?.includes('--')) return;
 
 		const servers = await serverSchema.find();
 
