@@ -1,0 +1,37 @@
+YEWSBOT Privacy Policy
+
+This policy explains how @brnapt, developer of YEWSBOT, collects and handles data from your Discord server when you add the bot.
+
+Data Collected:
+
+    Server ID: Used for bot identification and authorization.
+    Server Name: For informational purposes and potential future features.
+    Server Member Count: For statistical analysis and potential future features.
+    YEWSBOT Settings: Stores your personalized configuration for the bot.
+
+Data Storage:
+
+The collected data is stored securely on servers located in US-East. We take commercially reasonable measures to protect this data from unauthorized access or disclosure. This server is owned and operated by @brnapt, so data breaches are a slim-none chance.
+
+Data Usage:
+
+The collected data is used solely for the following purposes:
+
+    Providing and improving YEWSBOT functionality within your server.
+    Generating anonymous, aggregated statistics to understand bot usage patterns.
+
+Data Deletion:
+
+You can request the deletion of all collected data associated with your server by contacting @brnapt on Discord or at brandon@brandon3.me. Once verified, your data will be permanently deleted within 7 business days.
+
+Changes to this Policy:
+
+We may update this policy periodically. Changes will be reflected on this page, so please review it regularly.
+
+Your Consent:
+
+By adding YEWSBOT to your server, you consent to the collection, storage, and use of your data as described in this policy.
+
+Contact:
+
+If you have any questions about this policy, please contact @brnapt on Discord or at brandon@brandon3.me.

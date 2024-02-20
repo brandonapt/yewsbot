@@ -1,0 +1,42 @@
+YEWSBOT Terms of Service
+
+Last Updated: February 20, 2024
+
+1. Acceptance of Terms
+
+By adding YEWSBOT to your Discord server, you agree to be bound by the following terms and conditions ("Terms"). If you do not agree to all the Terms, you may not use YEWSBOT.
+
+2. Use of YEWSBOT
+
+You may use YEWSBOT for its intended purpose in accordance with these Terms and Discord's Terms of Service. Prohibited uses include, but are not limited to:
+
+    Unlawful activity: Using YEWSBOT to facilitate or promote illegal activities is strictly prohibited.
+    Harassment or abuse: Using YEWSBOT to harass, abuse, or threaten others is prohibited.
+    Spam or unsolicited messages: Sending spam or unsolicited messages through YEWSBOT is prohibited.
+    Exploitation or manipulation: Exploiting or manipulating YEWSBOT or its features is prohibited.
+    Interference with YEWSBOT operations: Attempting to interfere with YEWSBOT's operations, including its infrastructure or services, is prohibited.
+    Violating Discord's Terms of Service: Violating any of Discord's Terms of Service while using YEWSBOT is prohibited.
+
+3. Termination of Service
+
+We reserve the right to terminate your access to YEWSBOT for any violation of these Terms, at our sole discretion and without notice.
+
+4. Disclaimer
+
+YEWSBOT is provided "as is" and without warranties of any kind, express or implied. We do not guarantee the accuracy, reliability, or performance of YEWSBOT.
+
+5. Limitation of Liability
+
+We are not liable for any damages arising from your use of YEWSBOT, including but not limited to direct, indirect, incidental, consequential, or punitive damages.
+
+6. Indemnification
+
+You agree to indemnify and hold harmless @brnapt and its contributors from any and all claims, losses, damages, liabilities, costs, and expenses arising out of or relating to your use of YEWSBOT.
+
+7. General Provisions
+
+These Terms constitute the entire agreement between you and @brnapt concerning your use of YEWSBOT and supersede all prior or contemporaneous communications, representations, or agreements. These Terms may be amended at any time by @brnapt without notice. If any provision of these Terms is held to be invalid or unenforceable, such provision shall be struck and the remaining provisions shall remain in full force and effect. You may not assign these Terms without our prior written consent. These Terms shall be governed by and construed in accordance with the laws of the State of [Your State], without regard to its conflict of laws provisions.
+
+8. Contact
+
+If you have any questions about these Terms, please contact @brnapt on Discord.
