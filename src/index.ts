@@ -25,7 +25,7 @@ const client = new SapphireClient({
 	logger: {
 		level: LogLevel.Debug
 	},
-	intents: [GatewayIntentBits.Guilds],
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 	presence: {
 		status: PresenceUpdateStatus.Idle
 	},

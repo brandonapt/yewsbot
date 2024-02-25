@@ -1,8 +1,9 @@
 import { container } from '@sapphire/framework';
 import serverSchema from './db/schemas/server.schema';
+import { Guild } from 'discord.js';
 
 export default function () {
-    container.client.on('guildCreate', (guild) => {
+    container.client.on('guildCreate', (guild: Guild) => {
         console.log(`Joined guild: ${guild.name}`);
         const server = new serverSchema({
             id: guild.id,
