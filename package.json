@@ -33,6 +33,7 @@
     "@sapphire/ts-config": "^5.0.0",
     "@types/node": "^20.11.5",
     "@types/ws": "^8.5.10",
+    "nuxt-gtag": "^1.2.1",
     "prettier": "^3.2.4",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.3.3"
