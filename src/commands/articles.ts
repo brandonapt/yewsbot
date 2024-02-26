@@ -3,6 +3,7 @@ import { client } from '../db/redis';
 import bulkGetArticles from '../web/goons/bulkFetchArticles';
 import SettingsManager from '../managers/settings';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
+import yewsSchema from '../db/schemas/yews.schema';
 
 // Extend `Subcommand` instead of `Command`
 export class UserCommand extends Subcommand {
@@ -18,6 +19,10 @@ export class UserCommand extends Subcommand {
 				{
 					name: 'fetch',
 					chatInputRun: 'getDayArticles'
+				},
+				{
+					name: 'random',
+					chatInputRun: 'getRandomArticles'
 				}
 			]
 		});
@@ -37,6 +42,7 @@ export class UserCommand extends Subcommand {
 							option.setName('date').setDescription('date to fetch articles for').setRequired(true).setAutocomplete(true)
 						)
 				)
+				.addSubcommand((command) => command.setName('random').setDescription("get a random date's YEWS articles"))
 		);
 	}
 
@@ -208,5 +214,91 @@ export class UserCommand extends Subcommand {
 				content: 'This interaction has ended.'
 			});
 		});
+	}
+	public async getRandomArticles(interaction: Subcommand.ChatInputCommandInteraction) {
+		await interaction.deferReply();
+
+		const settings = new SettingsManager(interaction.guildId as string);
+		const images = await settings.getImages();
+
+		const all = await yewsSchema.find();
+		const random: any = all[Math.floor(Math.random() * all.length)];
+
+		const articleData = await bulkGetArticles(random.date, images as boolean);
+
+		if (!Array.isArray(articleData) || articleData.length === 0) {
+			await interaction.editReply({ content: 'No headlines found' });
+			return;
+		}
+
+		const embeds = articleData.map((article) => {
+			const embed = new EmbedBuilder()
+				.setColor(0xbcbcb9)
+				.setTitle(article.title)
+				.setURL(article.url)
+				.setDescription(article.contents)
+				.setFooter({
+					text: 'yews.news | page ' + (articleData.indexOf(article) + 1) + ' of ' + articleData.length
+				});
+				if (images) {
+					embed.setImage(article.image);
+				}
+				return embed;
+		});
+
+		let currentPage = 0;
+		const collectorFilter = (i: { user:
+			{ id: string } }) => i.user.id === interaction.user.id;
+
+		const previousButton = new ButtonBuilder().setCustomId('previous').setLabel('<-').setStyle(ButtonStyle.Primary);
+		const cancelButton = new ButtonBuilder().setCustomId('cancel').setLabel('Cancel').setStyle(ButtonStyle.Danger);
+		const nextButton = new ButtonBuilder().setCustomId('next').setLabel('->').setStyle(ButtonStyle.Primary);
+
+		const row = new ActionRowBuilder().addComponents(previousButton, cancelButton, nextButton);
+
+		const message = await interaction.editReply({
+			embeds: [embeds[currentPage]],
+			components: [row as any],
+			content: random.date,
+		});
+
+		const collector = message.createMessageComponentCollector({
+			filter: collectorFilter,
+			time: 60000
+		});
+
+		collector.on('collect', async (i) => {
+			if (i.customId === 'previous') {
+				if (currentPage === 0) {
+					currentPage = embeds.length - 1;
+				} else {
+					currentPage--;
+				}
+			} else if (i.customId === 'next') {
+				if (currentPage === embeds.length - 1) {
+					currentPage = 0;
+				} else {
+					currentPage++;
+				}
+			} else if (i.customId === 'cancel') {
+				collector.stop();
+				return;
+			}
+
+			await i.update({
+				embeds: [embeds[currentPage]],
+				components: [row] as any
+			});
+		});
+
+		collector.on('end', async () => {
+			await message.edit({
+				components: [],
+				content: 'This interaction has ended.'
+			});
+		});
+
+
+
 	}
 }

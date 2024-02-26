@@ -1,6 +1,7 @@
 import { Subcommand } from '@sapphire/plugin-subcommands';
 import getDay from '../web/goons/getDay';
 import { client } from "../db/redis";
+import yewsSchema from '../db/schemas/yews.schema';
 
 // Extend `Subcommand` instead of `Command`
 export class UserCommand extends Subcommand {
@@ -17,6 +18,10 @@ export class UserCommand extends Subcommand {
 					name: 'fetch',
 					chatInputRun: 'getDayHeadlines'
 				},
+				{
+					name: 'random',
+					chatInputRun: 'getRandomHeadlines'
+				}
 			]
 		});
 	}
@@ -43,6 +48,11 @@ export class UserCommand extends Subcommand {
 								.setAutocomplete(true)
 						)
 				)
+				.addSubcommand((command) =>
+					command
+						.setName('random')
+						.setDescription('get a random date\'s YEWS headlines')
+				),
 		);
 	}
 
@@ -75,6 +85,20 @@ export class UserCommand extends Subcommand {
 			await interaction.editReply({ content: 'No headlines found for that date' });
 			return;
 		}
+
+		await interaction.editReply({
+			content: "<" + headlines.url + ">",
+			files: [headlines.imageName as string]
+		})
+	}
+	
+	public async getRandomHeadlines(interaction: Subcommand.ChatInputCommandInteraction) {
+		await interaction.deferReply();
+
+		const all = await yewsSchema.find();
+		const random: any = all[Math.floor(Math.random() * all.length)];
+
+		const headlines = await getDay(random.date);
 
 		await interaction.editReply({
 			content: "<" + headlines.url + ">",
